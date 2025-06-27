@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI-Based Fake News Detector</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg">
+        <div class="container">
+            <a class="navbar-brand" href="/">
+                <i class="fas fa-shield-alt pulse"></i>
+                AI Fake News Detector
+            </a>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="container mt-5">
+        <!-- Hero Section -->
+        <div class="row justify-content-center mb-5">
+            <div class="col-lg-10">
+                <div class="text-center mb-5">
+                    <h1 class="display-4 fw-bold text-light-custom mb-3 fade-in-up">
+                        <i class="fas fa-brain me-3 float-animation text-gradient"></i>
+                        Detect Fake News with AI
+                    </h1>
+                    <p class="lead text-muted-custom fade-in-up" style="animation-delay: 0.2s;">
+                        Advanced NLP and Machine Learning algorithms to identify misinformation and verify news authenticity
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Main Detection Card -->
+        <div class="row justify-content-center">
+            <div class="col-lg-8">
+                <div class="card shadow-custom glass-hover fade-in-up" style="animation-delay: 0.4s;">
+                    <div class="card-header text-center">
+                        <h3 class="mb-0">
+                            <i class="fas fa-search me-2"></i>
+                            Analyze News Content
+                        </h3>
+                        <p class="mb-0 mt-2 opacity-75">Enter the news text you want to verify below</p>
+                    </div>
+                    <div class="card-body">
+                        <form id="newsForm">
+                            <div class="mb-4">
+                                <label for="newsText" class="form-label">
+                                    <i class="fas fa-newspaper me-2"></i>News Text
+                                </label>
+                                <textarea 
+                                    class="form-control" 
+                                    id="newsText" 
+                                    name="text" 
+                                    rows="6" 
+                                    placeholder="Paste the news article or text you want to analyze for authenticity..."
+                                    required
+                                ></textarea>
+                                <div class="form-text text-muted-custom mt-2">
+                                    <i class="fas fa-keyboard me-1"></i>
+                                    Tip: Use Ctrl+Enter to submit, Ctrl+K to focus here
+                                </div>
+                            </div>
+                            <div class="d-grid gap-2">
+                                <button type="submit" id="submitBtn" class="btn btn-primary btn-lg">
+                                    <i class="fas fa-search me-2"></i>
+                                    Analyze News
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Results Section -->
+        <div class="row justify-content-center mt-5" id="resultsSection" style="display: none;">
+            <div class="col-lg-8">
+                <div class="card shadow-custom glass-hover bounce-in">
+                    <div class="card-header text-center">
+                        <h4 class="mb-0">
+                            <i class="fas fa-chart-line me-2"></i>
+                            Analysis Results
+                        </h4>
+                    </div>
+                    <div class="card-body" id="results">
+                        <!-- Results will be populated here by JavaScript -->
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Features Section -->
+        <div class="row mt-5">
+            <div class="col-12">
+                <div class="text-center mb-4">
+                    <h2 class="fw-bold text-light-custom">
+                        <i class="fas fa-star me-2 text-gradient"></i>
+                        Key Features
+                    </h2>
+                    <p class="text-muted-custom">Advanced AI-powered detection capabilities</p>
+                </div>
+            </div>
+            <div class="col-md-4 mb-4">
+                <div class="card glass glass-hover h-100 text-center">
+                    <div class="card-body">
+                        <div class="mb-3">
+                            <img src="https://img.icons8.com/fluency/96/artificial-intelligence.png" alt="AI Icon" style="width: 60px; height: 60px;" class="pulse">
+                        </div>
+                        <h5 class="text-light-custom fw-bold">AI-Powered Analysis</h5>
+                        <p class="text-muted-custom">Advanced machine learning algorithms analyze text patterns and linguistic features</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4 mb-4">
+                <div class="card glass glass-hover h-100 text-center">
+                    <div class="card-body">
+                        <div class="mb-3">
+                            <img src="https://img.icons8.com/fluency/96/source-code.png" alt="Source Verification Icon" style="width: 60px; height: 60px;" class="pulse" style="animation-delay: 0.5s;">
+                        </div>
+                        <h5 class="text-light-custom fw-bold">Source Verification</h5>
+                        <p class="text-muted-custom">Cross-reference with trusted and unreliable source databases</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4 mb-4">
+                <div class="card glass glass-hover h-100 text-center">
+                    <div class="card-body">
+                        <div class="mb-3">
+                            <img src="https://img.icons8.com/fluency/96/speed.png" alt="Real-time Results Icon" style="width: 60px; height: 60px;" class="pulse" style="animation-delay: 1s;">
+                        </div>
+                        <h5 class="text-light-custom fw-bold">Real-time Results</h5>
+                        <p class="text-muted-custom">Get instant analysis results with confidence scores and detailed explanations</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- History Section -->
+        <div class="row mt-5" id="historySection">
+            <div class="col-12">
+                <div class="card shadow-custom glass-hover">
+                    <div class="card-header d-flex justify-content-between align-items-center">
+                        <h4 class="mb-0">
+                            <i class="fas fa-history me-2"></i>
+                            Recent Analysis History
+                        </h4>
+                        <button class="btn btn-outline-primary btn-sm" onclick="clearHistory()">
+                            <i class="fas fa-trash me-1"></i>Clear History
+                        </button>
+                    </div>
+                    <div class="card-body" id="historyContainer">
+                        <div class="text-center text-muted-custom py-4">
+                            <i class="fas fa-clock fa-2x mb-3 opacity-50 float-animation"></i>
+                            <p>No analysis history yet. Start by analyzing some news content above.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="mt-5 py-4">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-4">
+                    <h5 class="text-light-custom fw-bold">AI-Based Fake News Detector</h5>
+                    <p class="text-muted-custom mb-0">Empowering truth through artificial intelligence</p>
+                </div>
+                <div class="col-md-4 text-center">
+                    <p class="text-muted-custom mb-0">
+                        <i class="fas fa-code me-1"></i>
+                        Built with Flask, Transformers & NLP
+                    </p>
+                </div>
+                <div class="col-md-4 text-md-end">
+                    <p class="text-light-custom mb-0 fw-bold">
+                        <i class="fas fa-user-tie me-2 text-gradient"></i>
+                        Made by Kunal
+                    </p>
+                    <p class="text-muted-custom mb-0 small">
+                        <i class="fas fa-laptop-code me-1"></i>
+                        A Web Developer
+                    </p>
+                    <div class="social-links mt-2">
+                        <a href="https://github.com/kunalxbhandari-git" target="_blank" class="btn btn-outline-light btn-sm me-2" title="GitHub Profile">
+                            <i class="fab fa-github me-1"></i>GitHub
+                        </a>
+                        <a href="https://www.linkedin.com/in/kunalxbhandari/" target="_blank" class="btn btn-outline-primary btn-sm" title="LinkedIn Profile">
+                            <i class="fab fa-linkedin me-1"></i>LinkedIn
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <hr class="my-3" style="border-color: rgba(255, 255, 255, 0.1);">
+            <div class="row">
+                <div class="col-12 text-center">
+                    <p class="text-muted-custom mb-0 small">
+                        © 2025 AI Fake News Detector. Enhancing media literacy through technology.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="{{ url_for('static', filename='js/app.js') }}"></script>
+</body>
+</html> 

@@ -1,0 +1,7 @@
+data/
+*.lock
+*.log
+*.db
+__pycache__/
+.env
+.DS_Store
